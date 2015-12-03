@@ -15,6 +15,7 @@ IW1Search::IW1Search(RomSettings *rom_settings, Settings &settings,
 	m_reward_horizon = ( val < 0 ? std::numeric_limits<unsigned>::max() : val ); 
 
 	if( m_novelty_boolean_representation){
+        //Ram-size to screen size
 		m_ram_novelty_table_true = new aptk::Bit_Matrix( RAM_SIZE, 8 );
 		m_ram_novelty_table_false = new aptk::Bit_Matrix( RAM_SIZE, 8 );		
 	}
@@ -57,51 +58,11 @@ void IW1Search::print_path(TreeNode * node, int a) {
 	}
 }
 
-// void IW1Search::initialize_tree(TreeNode* node){
-// 	do {
-// 		Action act =  Action::PLAYER_A_NOOP
-// 		m_generated_nodes++;
-
-// 		TreeNode* child = new TreeNode(	curr_node,	
-// 					curr_node->state,
-// 					this,
-// 					act,
-// 					sim_steps_per_node); 
-		
-// 		if ( check_novelty_1( child->state.getRAM() ) ) {
-// 			update_novelty_table( child->state.getRAM() );
-			
-// 		}
-// 		else{
-// 			curr_node->v_children[a] = child;
-// 			child->is_terminal = true;
-// 			m_pruned_nodes++;
-// 			break;
-// 		}
-
-// 		num_simulated_steps += child->num_simulated_steps;					
-// 		node->v_children[a] = child;
-		
-// 		node = child;
-// 	}while( node->depth() < m_max_depth)
-// }
 
 void IW1Search::update_tree() {
 	expand_tree(p_root);
-	// for(unsigned byte = 0; byte < RAM_SIZE; byte++){
-	//     std::cout << "Byte: " << byte << std::endl;
-	//     int count = 0;
-	//     for( unsigned i = 0; i < 255; i++){
-	// 	if ( m_ram_novelty_table->isset( byte,i ) ){
-	// 	    count++;			
-	// 	    std::cout << "\t element: "<< i << std::endl;
-	// 	}
-
-	//     }
-	//     std::cout << "\t num_elements " << count << std::endl;
-	// }
-	// std::exit(0);
 }
+
 
 void IW1Search::update_novelty_table( const ALERAM& machine_state )
 {
@@ -121,8 +82,10 @@ void IW1Search::update_novelty_table( const ALERAM& machine_state )
 			m_ram_novelty_table->set( i, machine_state.get(i) );
 }
 
-bool IW1Search::check_novelty_1( const ALERAM& machine_state )
+int IW1Search::check_novelty_1( const ALERAM& machine_state )
 {
+    //machine screen?
+    int sum = 0;
 	for ( size_t i = 0; i < machine_state.size(); i++ )	
 		if( m_novelty_boolean_representation ){
 			unsigned char mask = 1;
@@ -131,19 +94,19 @@ bool IW1Search::check_novelty_1( const ALERAM& machine_state )
 				bool bit_is_set = (byte & (mask << j)) != 0;
 				if( bit_is_set ){
 					if( ! m_ram_novelty_table_true->isset( i, j ) )
-						return true;
+						sum +=1;
 				}
 				else{
 					if( ! m_ram_novelty_table_false->isset( i, j ) )
-						return true;
+						sum +=1;
 
 				}
 			}
 		}
 		else
 			if ( !m_ram_novelty_table->isset( i, machine_state.get(i) ) )
-				return true;
-	return false;
+				sum +=1;
+	return sum;
 }
 
 int IW1Search::expand_node( TreeNode* curr_node, queue<TreeNode*>& q )

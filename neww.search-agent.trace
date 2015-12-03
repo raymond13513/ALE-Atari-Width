@@ -1,0 +1,4 @@
+frame=0,expanded=56,generated=1008,pruned=934,depth_tree=8,tree_size=1009,best_action=PLAYER_A_LEFT,branch_reward=1.9554,elapsed=0.8
+frame=5,expanded=90,generated=1008,pruned=1496,depth_tree=8,tree_size=1621,best_action=PLAYER_A_LEFT,branch_reward=2.9356,elapsed=0.8
+frame=10,expanded=113,generated=1008,pruned=1863,depth_tree=8,tree_size=2035,best_action=PLAYER_A_UPLEFT,branch_reward=2.95035,elapsed=0.804
+frame=15,expanded=128,generated=1008,pruned=2113,depth_tree=8,tree_size=2305,best_action=PLAYER_A_UPLEFTFIRE,branch_reward=2.96517,elapsed=0.824

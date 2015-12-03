@@ -20,16 +20,11 @@
 #include "Deserializer.hxx"
 #include "System.hxx"
 #include <sstream>
-
+#include "newiw.hpp"
 #include "BreadthFirstSearch.hpp"
 #include "IW1Search.hpp"
-#include "IWtSearch.hpp"
-#include "IW11Search.hpp"
-#include "IW2Search.hpp"
-#include "IW1DijkstraSearch.hpp"
 #include "UniformCostSearch.hpp"
 #include "BestFirstSearch.hpp"
-#include "Width2BestFirstSearch.hpp"
 #include "UCTSearchTree.hpp"
 #include "time.hxx"
 
@@ -61,54 +56,18 @@ SearchAgent::SearchAgent(OSystem* _osystem, RomSettings* _settings, StellaEnviro
 	
 		search_tree->set_novelty_pruning();
 		m_trace.open( "iw1.search-agent.trace" );
-    
-	}else if( search_method == "iwt"){
-		search_tree = new IWtSearch(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "iwt.search-agent.trace" );
-    
-	}else if( search_method == "iw11"){
-		search_tree = new IW11Search(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "iw11.search-agent.trace" );
-    
-	}else if( search_method == "iw2"){
-		search_tree = new IW2Search(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "iw2.search-agent.trace" );
-    
-	}else if( search_method == "iw1-ucs"){
-		search_tree = new IW1DijkstraSearch(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "iw1-ucs.search-agent.trace" );
-    
-	}else if( search_method == "bfs"){
+    }else if( search_method == "newiw"){
 		search_tree = new BestFirstSearch(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "bfs.search-agent.trace" );
-    
-	}else if( search_method == "bfs_w2"){
-		search_tree = new Width2BestFirstSearch(	_settings, _osystem->settings(),
-						available_actions, _env);
-	
-		search_tree->set_novelty_pruning();
-		m_trace.open( "bfs_w2.search-agent.trace" );
-    
-	}  else if (search_method == "uct") {
-		search_tree = new UCTSearchTree(_settings, _osystem->settings(),
-					    available_actions, _env);
+					 		available_actions, _env);
+		m_trace.open( "newiw.search-agent.trace" );
+    }else if( search_method == "uct"){
+		search_tree = new UCTSearchTree(	_settings, _osystem->settings(),
+					 		available_actions, _env);
 		m_trace.open( "uct.search-agent.trace" );
-	} else {
+    }
+    
+    
+    else {
 		cerr << "Unknown search Method: " << search_method << endl;
 		exit(-1);
 	}

@@ -40,7 +40,7 @@ protected:
     	void set_terminal_root(TreeNode* node); 
 
 	void	update_novelty_table( const ALERAM &machine_state );
-	bool	check_novelty_1( const ALERAM& machine_state );
+	int	check_novelty_1( const ALERAM& machine_state );
 
 	virtual void	clear();
 	virtual void	move_to_best_sub_branch();

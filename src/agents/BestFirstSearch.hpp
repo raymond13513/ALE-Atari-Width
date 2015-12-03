@@ -35,8 +35,7 @@ public:
 	}
     };
 
-    virtual int  expand_node( TreeNode* n ); 
-
+    virtual int explore_child(TreeNode* child_node);
     void clear_queues(){
 	    delete q_exploration;
 	    delete q_exploitation;
@@ -45,11 +44,11 @@ public:
     }
 
 protected:	
-
+    int calculate_novelty(TreeNode * child_node);
     void reset_branch(TreeNode* node);
     int  reuse_branch(TreeNode* node);
     unsigned size_branch(TreeNode* node);
-
+    
     virtual void expand_tree(TreeNode* start);
 
     std::priority_queue<TreeNode*, std::vector<TreeNode*>, TreeNodeComparerExploration >* q_exploration;

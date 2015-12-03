@@ -18,7 +18,7 @@ def main() :
 		sys.exit(1)
 
 
-	command = './ale -display_screen true -max_sim_steps_per_frame 200 -player_agent search_agent -search_method %(search_method)s %(rom_path)s'%locals()
+	command = './ale -display_screen true -max_sim_steps_per_frame 10000 -player_agent search_agent -search_method %(search_method)s %(rom_path)s'%locals()
 	print >> sys.stdout, "Command:"
 	print >> sys.stdout, command
 	os.system( command)
