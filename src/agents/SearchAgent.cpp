@@ -20,7 +20,7 @@
 #include "Deserializer.hxx"
 #include "System.hxx"
 #include <sstream>
-#include "newiw.hpp"
+#include "IW2.hpp"
 #include "BreadthFirstSearch.hpp"
 #include "IW1Search.hpp"
 #include "UniformCostSearch.hpp"
@@ -40,8 +40,8 @@ SearchAgent::SearchAgent(OSystem* _osystem, RomSettings* _settings, StellaEnviro
 	}
 
 	// Depending on the configuration, create a SearchTree of the requested type
-	if (search_method == "brfs") {
-		search_tree = new BreadthFirstSearch(	_settings, _osystem->settings(),
+	if (search_method == "bfs") {
+		search_tree = new BestFirstSearch(	_settings, _osystem->settings(),
 					 		available_actions, _env);
 		m_trace.open( "brfs.search-agent.trace" );
 	} else if ( search_method == "ucs" ) {
@@ -56,8 +56,8 @@ SearchAgent::SearchAgent(OSystem* _osystem, RomSettings* _settings, StellaEnviro
 	
 		search_tree->set_novelty_pruning();
 		m_trace.open( "iw1.search-agent.trace" );
-    }else if( search_method == "newiw"){
-		search_tree = new BestFirstSearch(	_settings, _osystem->settings(),
+    }else if( search_method == "iw2"){
+		search_tree = new IW2(	_settings, _osystem->settings(),
 					 		available_actions, _env);
 		m_trace.open( "newiw.search-agent.trace" );
     }else if( search_method == "uct"){
