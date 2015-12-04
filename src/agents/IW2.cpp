@@ -40,16 +40,14 @@ int IW2:: calculate_novelty(TreeNode * child_node){
 }
 
 void IW2:: pushqueue(TreeNode* child){
-    if( child->novelty !=  MAXI ){
-	    if (!child->is_terminal) {
-	        if (! (ignore_duplicates && test_duplicate(child)) ){				
-				
-			    q_exploration->push(child);
-                if (child-> fn != m_max_reward)
-                    q_exploitation->push(child);
-	        }
-	    }
+    if (!child->is_terminal) {
+        if (! (ignore_duplicates && test_duplicate(child)) ){				
+		    q_exploration->push(child);
+            if (child-> fn != m_max_reward)
+                q_exploitation->push(child);
+        }
     }
+    
 }
 
 int IW2:: expand_node(TreeNode* curr_node){
@@ -208,6 +206,7 @@ unsigned IW2::size_branch(TreeNode* node) {
 }
 
 TreeNode* IW2::choose_node(){
+    //cout<<q_exploration->size();
     TreeNode * node;
     if (q_exploration-> empty()){
         return NULL;
