@@ -208,7 +208,6 @@ unsigned IW2::size_branch(TreeNode* node) {
 
 TreeNode *IW2::choose_node(){
     bool decide =  (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) >0.5);
-    cout << decide;
     TreeNode *node = NULL;
     if( q_exploration->empty() &&  q_exploitation->empty())
         return NULL;
