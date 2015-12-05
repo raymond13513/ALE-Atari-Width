@@ -1,9 +1,0 @@
-frame=0,expanded=167,generated=3006,pruned=0,depth_tree=3,tree_size=3007,best_action=PLAYER_A_LEFTFIRE,branch_reward=0,elapsed=2.276
-frame=5,expanded=167,generated=2988,pruned=0,depth_tree=4,tree_size=3007,best_action=PLAYER_A_FIRE,branch_reward=0,elapsed=2.252
-frame=10,expanded=167,generated=2664,pruned=0,depth_tree=5,tree_size=3007,best_action=PLAYER_A_DOWNLEFTFIRE,branch_reward=0,elapsed=2.008
-frame=15,expanded=167,generated=2988,pruned=0,depth_tree=6,tree_size=3007,best_action=PLAYER_A_LEFT,branch_reward=0.990025,elapsed=2.236
-frame=20,expanded=167,generated=2664,pruned=0,depth_tree=7,tree_size=3007,best_action=PLAYER_A_UPLEFT,branch_reward=1.98503,elapsed=2.016
-frame=25,expanded=167,generated=2664,pruned=0,depth_tree=8,tree_size=3007,best_action=PLAYER_A_UPLEFT,branch_reward=1.995,elapsed=2.044
-frame=30,expanded=167,generated=2988,pruned=0,depth_tree=9,tree_size=3007,best_action=PLAYER_A_UPRIGHTFIRE,branch_reward=1,elapsed=2.28
-frame=35,expanded=167,generated=2988,pruned=0,depth_tree=10,tree_size=3007,best_action=PLAYER_A_DOWNFIRE,branch_reward=0.990025,elapsed=2.288
-frame=40,expanded=167,generated=2664,pruned=0,depth_tree=11,tree_size=3007,best_action=PLAYER_A_DOWNRIGHTFIRE,branch_reward=0.995,elapsed=2.052

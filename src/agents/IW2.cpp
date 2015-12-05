@@ -41,8 +41,9 @@ int IW2:: calculate_novelty(TreeNode * child_node){
 
 void IW2:: pushqueue(TreeNode* child){
     if (!child->is_terminal) {
-        if (! (ignore_duplicates && test_duplicate(child)) ){				
-		    q_exploration->push(child);
+        if (! (ignore_duplicates && test_duplicate(child)) ){	
+            if (child->novelty!= MAXI)			
+		        q_exploration->push(child);
             if (child-> fn != m_max_reward)
                 q_exploitation->push(child);
         }
@@ -205,16 +206,36 @@ unsigned IW2::size_branch(TreeNode* node) {
 
 }
 
-TreeNode* IW2::choose_node(){
-    //cout<<q_exploration->size();
-    TreeNode * node;
-    if (q_exploration-> empty()){
+TreeNode *IW2::choose_node(){
+    bool decide =  (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) >0.5);
+    cout << decide;
+    TreeNode *node = NULL;
+    if( q_exploration->empty() &&  q_exploitation->empty())
         return NULL;
+    else if (q_exploration->empty()){
+        node =  q_exploitation->top();
+        q_exploitation->pop();
     }
-    node = q_exploration->top();
-    q_exploration->pop();
+    else if (q_exploitation->empty()){
+        node =  q_exploration->top();
+        q_exploration->pop();
+    }
+    else{
+        //std::cout << p;
+        if (decide){
+            node = q_exploitation->top();
+            q_exploitation->pop();       
+            //std::cout<<"exploit"; 
+        }
+        else{
+            node =  q_exploration->top();
+            q_exploration->pop();
+            //std::cout<<"explore";
+        }
+    }
 	return node;
 }
+
 /* *********************************************************************
    Expands the tree from the given node until i_max_sim_steps_per_frame
    is reached

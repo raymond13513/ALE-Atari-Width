@@ -293,7 +293,7 @@ class Algorithm_Performance :
 
 if __name__ == '__main__':
 
-	episodes = retrieve_episodes('experiments_300_reuse')
+	episodes = retrieve_episodes('experiments_150k_reuse')
 	print >> sys.stdout, len(episodes), 'episodes retrieved'
 	# the experimental data set is represented as a nested dictionary
 	# { game, { algorithm, instance of Algorithm Performance } }

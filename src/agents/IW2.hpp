@@ -8,8 +8,8 @@ public:
     IW2(RomSettings *, Settings &settings, ActionVect &actions, StellaEnvironment* _env);
 
 	virtual ~IW2();
-    TreeNode* choose_node();
-
+    virtual TreeNode* choose_node();
+    void pushqueue(TreeNode* child);
     class TreeNodeComparerExploration
     {
     public:
@@ -48,7 +48,7 @@ protected:
     void reset_branch(TreeNode* node);
     int  reuse_branch(TreeNode* node);
     unsigned size_branch(TreeNode* node);
-    void pushqueue(TreeNode* child);
+    
     virtual void expand_tree(TreeNode* start);
 
     std::priority_queue<TreeNode*, std::vector<TreeNode*>, TreeNodeComparerExploration >* q_exploration;

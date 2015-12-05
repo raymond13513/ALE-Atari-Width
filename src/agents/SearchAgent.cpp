@@ -21,10 +21,8 @@
 #include "System.hxx"
 #include <sstream>
 #include "IW2.hpp"
-#include "BreadthFirstSearch.hpp"
 #include "IW1Search.hpp"
 #include "UniformCostSearch.hpp"
-#include "BestFirstSearch.hpp"
 #include "UCTSearchTree.hpp"
 #include "time.hxx"
 
@@ -40,11 +38,7 @@ SearchAgent::SearchAgent(OSystem* _osystem, RomSettings* _settings, StellaEnviro
 	}
 
 	// Depending on the configuration, create a SearchTree of the requested type
-	if (search_method == "bfs") {
-		search_tree = new BestFirstSearch(	_settings, _osystem->settings(),
-					 		available_actions, _env);
-		m_trace.open( "brfs.search-agent.trace" );
-	} else if ( search_method == "ucs" ) {
+	if ( search_method == "ucs" ) {
 		search_tree = new UniformCostSearch(	_settings, _osystem->settings(),
 							available_actions, _env);
 	

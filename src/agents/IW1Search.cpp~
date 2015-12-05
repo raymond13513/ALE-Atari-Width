@@ -106,7 +106,7 @@ int IW1Search::check_novelty_1( const ALERAM& machine_state )
 		else
 			if ( !m_ram_novelty_table->isset( i, machine_state.get(i) ) )
 				sum +=1;
-	return false;
+	return sum;
 }
 
 int IW1Search::expand_node( TreeNode* curr_node, queue<TreeNode*>& q )
