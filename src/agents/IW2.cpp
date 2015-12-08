@@ -42,12 +42,12 @@ int IW2:: calculate_novelty(TreeNode * child_node){
 void IW2:: pushqueue(TreeNode* child){
     if (!child->is_terminal) {
         if (! (ignore_duplicates && test_duplicate(child)) ){	
-            if (child->novelty!= MAXI){		
+            	
 		        q_exploration->push(child);
                 if (child-> fn != m_max_reward)
                     q_exploitation->push(child);
-            }
-        }
+            
+                }
     }
     
 }
