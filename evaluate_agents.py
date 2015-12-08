@@ -65,13 +65,13 @@ def main() :
 
 
 
-        command_template = './ale -display_screen false -discount_factor 0.995 -randomize_successor_novelty true -record_trajectory %(record)s -max_sim_steps_per_frame 3000 -max_num_frames 5000 -restricted_action_set true -random_seed %(i)d %(agent_cmd)s %(rom_path)s'
+        command_template = './ale -display_screen false -discount_factor 0.995 -randomize_successor_novelty true -record_trajectory %(record)s -max_sim_steps_per_frame 10000 -max_num_frames 6000 -restricted_action_set true -random_seed %(i)d %(agent_cmd)s %(rom_path)s'
 
         inputs = []
 	for game, rom_path in games :
 		for agent, agent_cmd in agents :
 			#if 'iw1' in agent and 'pong' not in game: continue
-			folder = 'experiments_10k_reuse/%(game)s/%(agent)s'%locals()
+			folder = 'experiments_20k_reuse/%(game)s/%(agent)s'%locals()
 			if not os.path.exists( folder ) :
 				os.system( 'mkdir -p %(folder)s'%locals() )
 			for i in range( 0, num_runs ) :

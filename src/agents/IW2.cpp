@@ -42,10 +42,11 @@ int IW2:: calculate_novelty(TreeNode * child_node){
 void IW2:: pushqueue(TreeNode* child){
     if (!child->is_terminal) {
         if (! (ignore_duplicates && test_duplicate(child)) ){	
-            if (child->novelty!= MAXI)			
+            if (child->novelty!= MAXI){		
 		        q_exploration->push(child);
-            if (child-> fn != m_max_reward)
-                q_exploitation->push(child);
+                if (child-> fn != m_max_reward)
+                    q_exploitation->push(child);
+            }
         }
     }
     
@@ -64,10 +65,12 @@ int IW2:: expand_node(TreeNode* curr_node){
 			std::random_shuffle ( curr_node->available_actions.begin(), curr_node->available_actions.end() );
 
     }
+    TreeNode * child;
     //exploring all actions 
+    std::vector<TreeNode *> expanded_childs = std::vector<TreeNode*>();   
     for (int a = 0; a < num_actions; a++) {
         Action act = curr_node->available_actions[a];
-		TreeNode * child;
+		
         //To avoid creating new child if the parent is previously explored, we check if the node is leaf or not
         if (leaf_node){
         	m_generated_nodes++;
@@ -88,10 +91,11 @@ int IW2:: expand_node(TreeNode* curr_node){
         //now we have our child, do stuff to it
         //calculate the child's novelty
         child ->novelty = calculate_novelty(child);
-        //update novelty table if this child have something new
         if (child->novelty != MAXI){
             update_novelty_table( child->state.getRAM() );
         }
+            
+                
         child->fn += ( m_max_reward - child->discounted_accumulated_reward ); // Miquel: add this to obtain Hector's BFS + m_max_reward * (720 - child->depth()) ;
         if (child->depth() > m_max_depth ) m_max_depth = child->depth();   
         num_simulated_steps += child->num_simulated_steps;
@@ -101,6 +105,11 @@ int IW2:: expand_node(TreeNode* curr_node){
         pushqueue(child);
 
     }
+    // only update the novelty table of the child that have maximum novelty to dampen the agressive pruning
+
+    //for ( auto &i : expanded_childs) {
+    //    update_novelty_table( i->state.getRAM() );
+    //}
     curr_node->already_expanded = true;
 	return num_simulated_steps;
         
@@ -139,7 +148,8 @@ int IW2::reuse_branch(TreeNode* node) {
 		if (!node->v_children.empty()) {
 			for(size_t c = 0; c < node->v_children.size(); c++) {			
 				TreeNode* child = curr_node->v_children[c];				
-				
+				 
+
 				// This recreates the novelty table (which gets resetted every time
 				// we change the root of the search tree)
 			        if ( m_novelty_pruning ){				
@@ -208,6 +218,7 @@ unsigned IW2::size_branch(TreeNode* node) {
 
 TreeNode *IW2::choose_node(){
     bool decide =  (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) >0.5);
+    decide = false;
     TreeNode *node = NULL;
     if( q_exploration->empty() &&  q_exploitation->empty())
         return NULL;

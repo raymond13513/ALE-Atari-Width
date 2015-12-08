@@ -18,6 +18,8 @@ public:
 	{
 		if ( b->novelty < a->novelty ) return true;
 		else if( b->novelty == a->novelty && b->fn < a->fn ) return true;
+        else if( b->fn == a->fn && b->novelty == a->novelty && b->depth() < a->depth()) return true;
+
 		return false;
 	}
     };
@@ -31,6 +33,7 @@ public:
 	{
 	    if ( b->fn < a->fn ) return true;
 	    else if( b->fn == a->fn && b->novelty < a->novelty ) return true;
+        else if( b->fn == a->fn && b->novelty == a->novelty && b->depth() < a->depth()) return true;
 	    return false;
 	}
     };

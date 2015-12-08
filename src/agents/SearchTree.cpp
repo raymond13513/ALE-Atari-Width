@@ -116,7 +116,7 @@ Action SearchTree::get_best_action(void) {
 	for (size_t c = 0; c < p_root->v_children.size(); c++) {
 		TreeNode* curr_child = p_root->v_children[ c ];
 
-		std::cout << "Action: " << action_to_string(curr_child->act) << " Depth: " << curr_child->branch_depth  <<" NumNodes: " << curr_child->num_nodes() << " Reward: "<< curr_child->branch_return   << std::endl;
+		std::cout << "Action: " << action_to_string(curr_child->act) << " Depth: " << curr_child->branch_depth  <<" NumNodes: " << curr_child->num_nodes() << " Reward: "<< curr_child->branch_return   <<"Novelty: "<<curr_child->novelty<< std::endl;
 	
 	}
 	
