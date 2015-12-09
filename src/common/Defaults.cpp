@@ -70,4 +70,5 @@ void setDefaultSettings(Settings &settings) {
 	settings.setBool("randomize_successor_novelty", true );
 
 	settings.setBool("novelty_boolean", false);
+	settings.setBool("novelty_int", false);
 }

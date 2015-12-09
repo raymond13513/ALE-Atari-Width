@@ -320,7 +320,19 @@ void IW2::expand_tree(TreeNode* start_node) {
 	        break;
 	    }
     }
-   
+    if( m_novelty_int_representation ){
+		std::cout <<"New Update: "<< std::endl;	
+		for ( size_t i = 0; i < RAM_SIZE; i++ ){
+			std::cout <<"Byte "<< i <<": ";	
+			for(int j = 0; j < 256; j++) {
+				int count = m_ram_int_novelty_table->at( i )->at( j );
+				if( count > 0)
+					std::cout << "[" << j << "]: " << count << " " ;
+			}
+			std::cout << std::endl;
+		}
+    }
+    
     std::cout << "\tExpanded so far: " << m_expanded_nodes << std::endl;	
     std::cout << "\tExpanded Novelty 1: " << m_exp_count_novelty1 << std::endl;	
     std::cout << "\tExpanded Novelty 2: " << m_exp_count_novelty2 << std::endl;	

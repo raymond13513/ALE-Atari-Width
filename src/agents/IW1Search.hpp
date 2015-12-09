@@ -4,7 +4,7 @@
 #include "SearchTree.hpp"
 #include "bit_matrix.hxx"
 #include "../environment/ale_ram.hpp"
-
+#include "types.hxx"
 #include <queue>
 
 class IW1Search : public SearchTree {
@@ -49,10 +49,13 @@ protected:
 	aptk::Bit_Matrix*	m_ram_novelty_table;
 	aptk::Bit_Matrix*	m_ram_novelty_table_true;
 	aptk::Bit_Matrix*	m_ram_novelty_table_false;
+	Int_Matrix_Ptr          m_ram_int_novelty_table;
+	
 	unsigned		m_pruned_nodes;
 	bool			m_stop_on_first_reward;
 	unsigned		m_reward_horizon;	
 	bool                    m_novelty_boolean_representation;
+	bool               	m_novelty_int_representation;
 
 };
 

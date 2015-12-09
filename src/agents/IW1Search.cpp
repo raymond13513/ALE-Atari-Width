@@ -11,6 +11,7 @@ IW1Search::IW1Search(RomSettings *rom_settings, Settings &settings,
 	int val = settings.getInt( "iw1_reward_horizon", -1 );
 
 	m_novelty_boolean_representation = settings.getBool( "novelty_boolean", false );
+	m_novelty_int_representation = settings.getBool( "novelty_int", false );
 
 	m_reward_horizon = ( val < 0 ? std::numeric_limits<unsigned>::max() : val ); 
 
@@ -21,6 +22,16 @@ IW1Search::IW1Search(RomSettings *rom_settings, Settings &settings,
 	}
 	else
 		m_ram_novelty_table = new aptk::Bit_Matrix( RAM_SIZE, 256 );
+
+	//Int-Novelty Table for ram_size*256
+	if( m_novelty_int_representation ){
+		if( ! m_novelty_boolean_representation ){
+			
+			m_ram_int_novelty_table = new Int_Matrix( RAM_SIZE );
+			for(unsigned i = 0; i < RAM_SIZE; i++)
+				m_ram_int_novelty_table->at(i) = new Int_Array( 256, 0 );
+		}
+	}
 }
 
 IW1Search::~IW1Search() {
@@ -78,8 +89,17 @@ void IW1Search::update_novelty_table( const ALERAM& machine_state )
 					m_ram_novelty_table_false->set( i, j );
 			}
 		}
-		else
+		else{
 			m_ram_novelty_table->set( i, machine_state.get(i) );
+			//Updating int novelty representation
+			if( m_novelty_int_representation ){
+				m_ram_int_novelty_table->at( i )->at( (unsigned) machine_state.get(i) )++;
+			}
+			
+	
+		}
+
+	
 }
 
 int IW1Search::check_novelty_1( const ALERAM& machine_state )
@@ -268,6 +288,19 @@ void IW1Search::expand_tree(TreeNode* start_node) {
 
 	} while ( !pivots.empty() );
     
+
+	if( m_novelty_int_representation ){
+		std::cout <<"New Update: "<< std::endl;	
+		for ( size_t i = 0; i < RAM_SIZE; i++ ){
+			std::cout <<"Byte "<< i <<": ";	
+			for(int j = 0; j < 256; j++) {
+				int count = m_ram_int_novelty_table->at( i )->at( j );
+				if( count > 0)
+					std::cout << "[" << j << "]: " << count << " " ;
+			}
+			std::cout << std::endl;
+		}
+	}
 
 	
 	update_branch_return(start_node);
