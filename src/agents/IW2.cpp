@@ -42,8 +42,8 @@ int IW2:: calculate_novelty(TreeNode * child_node){
 void IW2:: pushqueue(TreeNode* child){
     if (!child->is_terminal) {
         if (! (ignore_duplicates && test_duplicate(child)) ){	
-            	
-		        q_exploration->push(child);
+            	if (child -> novelty != MAXI)
+		            q_exploration->push(child);
                 if (child-> fn != m_max_reward)
                     q_exploitation->push(child);
             
@@ -54,6 +54,7 @@ void IW2:: pushqueue(TreeNode* child){
 
 int IW2:: expand_node(TreeNode* curr_node){
     int num_simulated_steps =0;
+    //cout << "come";
     bool leaf_node = (curr_node->v_children.empty());
     int num_actions = available_actions.size();
     // if leaf node we resize the children list
@@ -84,22 +85,26 @@ int IW2:: expand_node(TreeNode* curr_node){
             //add in to the child list
             curr_node->v_children[a] = child;
             child->updateTreeNode();
+            num_simulated_steps += child->num_simulated_steps;
         }
         else{
+ 
             child = curr_node ->v_children[a];
+            child ->updateTreeNode();
         }
         //now we have our child, do stuff to it
         //calculate the child's novelty
         child ->novelty = calculate_novelty(child);
         if (child->novelty != MAXI){
+            
             update_novelty_table( child->state.getRAM() );
         }
             
                 
         child->fn += ( m_max_reward - child->discounted_accumulated_reward ); // Miquel: add this to obtain Hector's BFS + m_max_reward * (720 - child->depth()) ;
         if (child->depth() > m_max_depth ) m_max_depth = child->depth();   
-        num_simulated_steps += child->num_simulated_steps;
         
+       
     
 		// Push the child node to the queue
         pushqueue(child);
@@ -253,30 +258,20 @@ TreeNode *IW2::choose_node(){
    ******************************************************************* */
 
 void IW2::expand_tree(TreeNode* start_node) {
-    // If the root is terminal, we will not expand any of its children; deal with this
-    //  appropriately
-    if (start_node->is_terminal) {
-	set_terminal_root(start_node);
-	return;
-    }
-
+    clear_queues();
+    start_node ->updateTreeNode();
+    start_node -> already_expanded = false;
+   //check if start node is expanded or not
+    //if expanded
+    //cout <<"depth: "<< start_node -> depth()<<"is empty"<<start_node ->v_children.empty()<<"Novelty: "<<start_node ->novelty;
+   
+    
+    update_novelty_table(start_node->state.getRAM());
+    q_exploration -> push(start_node);
     int num_simulated_steps = 0;
     
     int max_nodes_per_frame = max_sim_steps_per_frame / sim_steps_per_node;
-    clear_queues();
     
-    if(!start_node->v_children.empty()) {
-	    start_node->updateTreeNode();
-	    num_simulated_steps += reuse_branch( start_node );
-	    std::cout  << "Num_reused_steps: "<< num_simulated_steps << std::endl;
-	    num_simulated_steps = 0;     
-	    update_novelty_table( start_node->state.getRAM() );
-    }
-    else
-	    {
-	    q_exploration->push(start_node);        
-	    update_novelty_table( start_node->state.getRAM() );
-    }
 
     m_expanded_nodes = 0;
     m_generated_nodes = 0;
