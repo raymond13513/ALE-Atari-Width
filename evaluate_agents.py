@@ -56,7 +56,7 @@ def main() :
     num_runs = 5
     ran = 2
     inc = 2500
-
+    exp_folder = "test"
     agents = [  
             
                 ( 'iw2', '-player_agent search_agent -search_method iw2' ),
@@ -72,7 +72,7 @@ def main() :
         for game, rom_path in games :
             for agent, agent_cmd in agents :
                 #if 'iw1' in agent and 'pong' not in game: continue
-                folder = 'test_reuse/%(game)s/%(agent)s'%locals()
+                folder = exp_folder+'/'+str(step) +'/%(game)s/%(agent)s'%locals()
                 if not os.path.exists( folder ) :
                     os.system( 'mkdir -p %(folder)s'%locals() )
                 for i in range( 0, num_runs ) :
@@ -81,11 +81,11 @@ def main() :
                         record = "true"
                     if not os.path.exists(  os.path.join( folder, 'episode.%d'%(i+1) ) ):                   
                         inputs.append( (folder, command_template%locals(), agent, rom_path, i ) );
-                    
-        print "jobs_scheduled:"
-        print '\n'.join( str(input) for input in inputs )        
-        print '\n'
-        jobs = [ (input, job_server.submit(run_instance, input,(),("benchmark",)) )for input in inputs]
+                
+    print "jobs_scheduled:"
+    print '\n'.join( str(input) for input in inputs )        
+    print '\n'
+    jobs = [ (input, job_server.submit(run_instance, input,(),("benchmark",)) )for input in inputs]
     for input, job in jobs:
         print "Output", input, "is", job()
 
